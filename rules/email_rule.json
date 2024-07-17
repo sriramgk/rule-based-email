@@ -1,0 +1,37 @@
+{
+    "rule_sets": [
+        {
+            "description": "Move messages where subject contains HappyFox",
+            "rules": [
+                {
+                    "field": "subject",
+                    "predicate": "contains",
+                    "value": "HappyFox"
+                }
+            ],
+            "rule_match": "all",
+            "actions": [
+                {
+                    "action": "move_message",
+                    "value": "Label_9"
+                }
+            ]
+        },
+        {
+            "description": "If the sender is from no-reply@accounts.google.com, mark the email as read",
+            "rules": [
+                {
+                    "field": "sender_email",
+                    "predicate": "contains",
+                    "value": "no-reply@accounts.google.com"
+                }
+            ],
+            "rule_match": "all",
+            "actions": [
+                {
+                    "action": "mark_as_read"
+                }
+            ]
+        }
+    ]
+}

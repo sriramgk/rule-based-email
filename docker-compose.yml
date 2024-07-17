@@ -1,0 +1,26 @@
+version: '3.7'
+
+services:
+  postgres-email:
+    image: postgres:15
+    container_name: postgres-db-email
+    restart: unless-stopped
+    environment:
+      POSTGRES_USER: 'dbuser'
+      POSTGRES_PASSWORD: 'dbpwd'
+      POSTGRES_DB: 'emails'
+    ports:
+      - '5432:5432'
+    user: ${POSTGRES_UID}:${POSTGRES_GID}
+    volumes:
+      - ./storage/postgresql/data:/var/lib/postgresql/data:z
+
+  pgadmin-mail:
+    container_name: pgadmin4_container_mail
+    image: dpage/pgadmin4
+    restart: always
+    environment:
+      PGADMIN_DEFAULT_EMAIL: admin@admin.com
+      PGADMIN_DEFAULT_PASSWORD: postgres
+    ports:
+      - "5052:80"
