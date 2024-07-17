@@ -25,7 +25,6 @@ This will install the postgres database and pgadmin for easy database management
 ```
 docker compose build
 docker compose up -d
-docker compose exec -it rule-based-email /bin/bash
 ```
 
 Username and password for the database are already set in the docker-compose file.
