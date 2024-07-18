@@ -5,8 +5,9 @@ from sqlalchemy.sql import func
 
 Base = declarative_base()
 
+
 class Email(Base):
-    __tablename__ = 'emails'
+    __tablename__ = "emails"
 
     id = Column(Integer, primary_key=True)
     subject = Column(String(255), nullable=True)
@@ -24,4 +25,6 @@ class Email(Base):
         return f"<Email(sender='{self.sender_email}', recipient='{self.recipient_emails}', subject='{self.subject}')>"
 
     def to_dict(self):
-        return {column.name: getattr(self, column.name) for column in self.__table__.columns}
+        return {
+            column.name: getattr(self, column.name) for column in self.__table__.columns
+        }

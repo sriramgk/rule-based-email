@@ -32,6 +32,23 @@
                     "action": "mark_as_read"
                 }
             ]
+        },
+        {
+            "description": "Message older than 30 days, move to archive",
+            "rules": [
+                {
+                    "field": "received_at",
+                    "predicate": "older_than",
+                    "value": "30"
+                }
+            ],
+            "rule_match": "all",
+            "actions": [
+                {
+                    "action": "move_message",
+                    "value": "Archive"
+                }
+            ]
         }
     ]
 }

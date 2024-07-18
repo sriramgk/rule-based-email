@@ -1,10 +1,10 @@
 import base64
-import json
+from datetime import datetime
 from typing import List
 
-from googleapiclient import discovery
 from google_auth_oauthlib.flow import InstalledAppFlow
-from datetime import datetime
+from googleapiclient import discovery
+
 
 # Strategy interface or base class for email providers. We have to inherit the same class if we want to fetch email from outlook, yahoo, etc.
 class EmailProviderStrategy:
@@ -25,6 +25,9 @@ class GoogleEmailProvider(EmailProviderStrategy):
         self.service = self.create_service()
 
     def create_service(self):
+        """
+        Create a service object for the Gmail API
+        """
         flow = InstalledAppFlow.from_client_secrets_file(
             self.credentials_path,
             scopes=["https://www.googleapis.com/auth/gmail.modify"],
@@ -32,10 +35,8 @@ class GoogleEmailProvider(EmailProviderStrategy):
         credentials = flow.run_local_server(port=0)
         return discovery.build("gmail", "v1", credentials=credentials)
 
-class GoogleFetchEmails(GoogleEmailProvider):
-    def __init__(self, credentials_path):
-        super().__init__(credentials_path)
 
+class GoogleFetchEmails(GoogleEmailProvider):
     def fetch_emails(self) -> List[dict]:
         details = []
         messages = (
@@ -67,7 +68,7 @@ class GoogleFetchEmails(GoogleEmailProvider):
         }
 
     def get_body(self, message):
-        body= ""
+        body = ""
         if "parts" in message["payload"]:
             # Iterate through the parts of the email
             for part in message["payload"]["parts"]:
@@ -83,7 +84,7 @@ class GoogleFetchEmails(GoogleEmailProvider):
             body = base64.urlsafe_b64decode(message["payload"]["body"]["data"]).decode(
                 "utf-8"
             )
-        
+
         return body
 
     def get_subject(self, message):
@@ -117,12 +118,13 @@ class GoogleFetchEmails(GoogleEmailProvider):
         # Get message status
         if "UNREAD" in message["labelIds"]:
             return "unread"
-        
+
         return "read"
-    
+
     def get_labels(self, message):
         # Get labels
         return message["labelIds"]
+
 
 class GoogleUpdateEmail(GoogleEmailProvider):
     def __init__(self, credentials_path):
@@ -133,15 +135,15 @@ class GoogleUpdateEmail(GoogleEmailProvider):
         self.service.users().messages().modify(
             userId="me", id=id, body=modifications
         ).execute()
-    
+
     def mark_as_read(self, id: str):
         # Mark email as read
         self.update_email(id, {"removeLabelIds": ["UNREAD"]})
-    
+
     def mark_as_unread(self, id: str):
         # Mark email as unread
         self.update_email(id, {"addLabelIds": ["UNREAD"]})
-    
+
     def move_to_label(self, id: str, label: str):
         # Move email to a label and skip inbox
         self.update_email(id, {"addLabelIds": [label], "removeLabelIds": ["INBOX"]})
