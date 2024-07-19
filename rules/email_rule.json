@@ -1,32 +1,20 @@
 {
     "rule_sets": [
         {
-            "description": "Move messages where subject contains HappyFox",
-            "rules": [
-                {
-                    "field": "subject",
-                    "predicate": "contains",
-                    "value": "HappyFox"
-                }
-            ],
-            "rule_match": "all",
-            "actions": [
-                {
-                    "action": "move_message",
-                    "value": "Label_9"
-                }
-            ]
-        },
-        {
-            "description": "If the sender is from no-reply@accounts.google.com, mark the email as read",
+            "description": "If anything from grammarly.com, mark it as read",
             "rules": [
                 {
                     "field": "sender_email",
                     "predicate": "contains",
-                    "value": "no-reply@accounts.google.com"
+                    "value": "@mail.grammarly.com"
+                },
+                {
+                    "field": "sender_email",
+                    "predicate": "contains",
+                    "value": "@grammarly.com"
                 }
             ],
-            "rule_match": "all",
+            "rule_match": "any",
             "actions": [
                 {
                     "action": "mark_as_read"
@@ -34,19 +22,46 @@
             ]
         },
         {
-            "description": "Message older than 30 days, move to archive",
+            "description": "If any subject contains NIFTY or stocks, mark it as Important",
             "rules": [
                 {
+                    "field": "subject",
+                    "predicate": "contains",
+                    "value": "NIFTY"
+                },
+                {
+                    "field": "subject",
+                    "predicate": "contains",
+                    "value": "stocks"
+                }
+            ],
+            "rule_match": "any",
+            "actions": [
+                {
+                    "action": "move_message",
+                    "value": "IMPORTANT"
+                }
+            ]
+        },
+        {
+            "description": "If the sender is from @grafana.com and older than 5 days, move to Archive",
+            "rules": [
+                {
+                    "field": "sender_email",
+                    "predicate": "contains",
+                    "value": "@grafana.com"
+                },
+                {
                     "field": "received_at",
-                    "predicate": "older_than",
-                    "value": "30"
+                    "predicate": "greater_than",
+                    "value": "5"
                 }
             ],
             "rule_match": "all",
             "actions": [
                 {
                     "action": "move_message",
-                    "value": "Archive"
+                    "value": "Label_9"
                 }
             ]
         }

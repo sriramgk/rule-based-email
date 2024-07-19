@@ -70,17 +70,17 @@ class EmailRuleProcessor:
             if action["action"] == "mark_as_read":
                 self.google_email_provider.mark_as_read(email.email_provider_id)
                 print(
-                    f"Marked email {email.email_provider_id}, Subject {email.subject} as read"
+                    f"Marked as read, {email.email_provider_id}, Subject {email.subject}"
                 )
             elif action["action"] == "mark_as_unread":
                 self.google_email_provider.mark_as_unread(email.email_provider_id)
                 print(
-                    f"Marked email {email.email_provider_id}, Subject {email.subject} as unread"
+                    f"Marked email as un read, {email.email_provider_id}, Subject {email.subject}"
                 )
             elif action["action"] == "move_message":
                 self.google_email_provider.move_to_label(
                     email.email_provider_id, action["value"]
                 )
                 print(
-                    f"Moved email {email.email_provider_id}, Subject {email.subject} to {action['value']}"
+                    f"Moved email to {action['value']}, {email.email_provider_id}, Subject {email.subject} "
                 )

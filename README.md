@@ -56,13 +56,21 @@ pip install -r requirements.txt
 1. Fetch emails from Gmail and store them in the database.
 
 ```
-python fetch_emails.py
+python email_handler.py
 ```
 
 This will open a browser window asking for permission to access your Gmail account. Click on `Allow` to give permission.
 
-2. Run the rule based operations on the emails.
+2. Edit the rule JSON file `rules/email_rules.json` and set the required rules.
+
+3. Run the rule based operations on the emails.
 
 ```
-python rule_based_operations.py
+python apply_rule.py
+```
+
+## Run tests
+
+```
+pytest --ignore=storage
 ```

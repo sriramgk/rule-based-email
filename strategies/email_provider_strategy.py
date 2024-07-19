@@ -40,7 +40,7 @@ class GoogleFetchEmails(GoogleEmailProvider):
     def fetch_emails(self) -> List[dict]:
         details = []
         messages = (
-            self.service.users().messages().list(userId="me", maxResults=10).execute()
+            self.service.users().messages().list(userId="me", labelIds=['CATEGORY_PROMOTIONS'], maxResults=10).execute()
         )
         # print(messages)
         for message in messages.get("messages", []):
@@ -145,5 +145,9 @@ class GoogleUpdateEmail(GoogleEmailProvider):
         self.update_email(id, {"addLabelIds": ["UNREAD"]})
 
     def move_to_label(self, id: str, label: str):
-        # Move email to a label and skip inbox
-        self.update_email(id, {"addLabelIds": [label], "removeLabelIds": ["INBOX"]})
+        if "IMPORTANT" in label:
+            self.update_email(id, {"addLabelIds": [label]})
+        else:
+            # Move email to a label and skip inbox
+            self.update_email(id, {"addLabelIds": [label], "removeLabelIds": ["INBOX"]})
+

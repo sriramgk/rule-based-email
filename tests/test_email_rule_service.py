@@ -1,8 +1,12 @@
-import pytest
 from datetime import datetime
-from unittest.mock import Mock
+from unittest.mock import Mock, patch
+
+import pytest
+from freezegun import freeze_time
+
 from models.email import Email
 from services.email_rule_service import EmailRuleProcessor
+
 
 @pytest.fixture
 def mock_email_provider():
@@ -77,7 +81,9 @@ def sample_emails():
         ),
     ]
 
+@freeze_time("2024-07-18")
 def test_apply_rules_to_emails(mock_email_provider, sample_rules, sample_emails):
+
     processor = EmailRuleProcessor(sample_rules, mock_email_provider)
     results = processor.apply_rules_to_emails(sample_emails)
 
