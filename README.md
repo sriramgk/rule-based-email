@@ -22,6 +22,7 @@ This is optional. If you don't have postgres installed on your system, you can u
 
 This will install the postgres database and pgadmin for easy database management.
 
+
 ```
 docker compose build
 docker compose up -d
